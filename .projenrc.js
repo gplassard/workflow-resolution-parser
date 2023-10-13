@@ -11,6 +11,8 @@ const project = new RustProject({
          edition: "2021",
       },
       dependencies: {
+         nom: "7",
+         serde_json: "1"
       }
    }
 });
