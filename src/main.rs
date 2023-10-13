@@ -36,7 +36,7 @@ mod tests {
     #[test]
     fn test_parse_whole_string() {
         let result = parse("Hello world");
-        let expected = Ok(("", JsonValue {value: json!("Hello worl")}));
+        let expected = Ok(("", JsonValue {value: json!("Hello world")}));
         assert_eq!(result, expected);
     }
 }
