@@ -1,5 +1,8 @@
+use nom::branch::alt;
+use nom::bytes::complete::tag_no_case;
 use nom::IResult;
 use nom::character::complete::anychar;
+use nom::combinator::value;
 use nom::multi::many0;
 use serde_json::json;
 use serde_json::value::Value;
@@ -26,6 +29,13 @@ fn parse(input: &str) -> IResult<&str, ResolvedValue> {
         remaining,
         ResolvedValue::JsonValue { value: parsed }
     ))
+}
+
+fn parse_boolean(input: &str) -> IResult<&str, ResolvedValue> {
+    alt((
+        value( ResolvedValue::JsonValue { value: json!(true) }, tag_no_case("true")),
+        value( ResolvedValue::JsonValue { value: json!(false) }, tag_no_case("false")),
+    ))(input)
 }
 
 #[cfg(test)]
@@ -68,4 +78,36 @@ mod tests {
         let expected = Ok(("", JsonValue {value: json!(42)}));
         assert_eq!(result, expected);
     }
+
+
+    #[test]
+    fn test_parse_boolean_true() {
+        let result = parse_boolean("true");
+        let expected = Ok(("", JsonValue {value: json!(true)}));
+        assert_eq!(result, expected);
+    }
+
+
+    #[test]
+    fn test_parse_boolean_false() {
+        let result = parse_boolean("false");
+        let expected = Ok(("", JsonValue {value: json!(false)}));
+        assert_eq!(result, expected);
+    }
+
+
+    #[test]
+    fn test_parse_boolean_true_case() {
+        let result = parse_boolean("TrUe");
+        let expected = Ok(("", JsonValue {value: json!(true)}));
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_boolean_remain() {
+        let result = parse_boolean("TrUeWithOtherStuff");
+        let expected = Ok(("WithOtherStuff", JsonValue {value: json!(true)}));
+        assert_eq!(result, expected);
+    }
+
 }
