@@ -1,6 +1,7 @@
 {
   "files": [
     ".gitattributes",
+    ".github/workflows/pull-request-lint.yml",
     ".github/workflows/rust-build.yml",
     ".github/workflows/rust-release.yml",
     ".gitignore",

@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@gplassard/projen-extensions": "^0.0.60",
-    "projen": "^0.74.11"
+    "@gplassard/projen-extensions": "^0.0.61",
+    "projen": "^0.76.4"
   },
   "volta": {
     "node": "18.18.2"

@@ -13,3 +13,4 @@ target
 !/.github/workflows/rust-release.yml
 !/.github/workflows/rust-build.yml
 !/.npmrc
+!/.github/workflows/pull-request-lint.yml
