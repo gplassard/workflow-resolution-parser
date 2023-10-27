@@ -1,6 +1,7 @@
 use serde_json::{json, Value};
 
 #[derive(PartialEq, Debug, Clone)]
+#[allow(clippy::enum_variant_names)]
 pub enum Expression {
     JsonValue {
         value: Value
@@ -8,6 +9,7 @@ pub enum Expression {
     TemplateExpression {
         expression: TemplateExpression
     },
+    #[allow(dead_code)]
     StringConcatenation {
         parts: Vec<Expression>
     },

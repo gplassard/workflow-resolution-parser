@@ -12,6 +12,7 @@ pub fn parse_string_as_expression(input: &str) -> IResult<&str, Expression> {
     ))
 }
 
+#[allow(dead_code)]
 pub fn parse_string(input: &str) -> IResult<&str, &str> {
     match input.find("}}") {
         Some(index) => Ok((&input[index..], &input[..index])),
