@@ -3,25 +3,20 @@ use nom::character::complete::space0;
 use nom::IResult;
 use nom::sequence::{delimited, preceded, terminated};
 
-use crate::expression::{Expression, PathElement};
-use crate::expression::TemplateExpression;
-use crate::parse::parse_string::parse_string;
+use crate::expression::Expression;
+use crate::parse::parse_template_expression::parse_template_expression;
 
 pub fn parse_template(input: &str) -> IResult<&str, Expression> {
     let (remaining, parsed) = delimited(
         tag("{{"),
-        preceded(space0, terminated(parse_string, space0)),
+        preceded(space0, terminated(parse_template_expression, space0)),
         tag("}}"),
     )(input)?;
 
     Ok((
         remaining,
         Expression::TemplateExpression {
-            expression: TemplateExpression::FieldAccessor {
-                path: vec![PathElement::AttributePath {
-                    name: parsed.to_string()
-                }]
-            }
+            expression: parsed
         }
     ))
 }
@@ -51,7 +46,7 @@ mod tests {
         let expected = Ok(("", Expression::TemplateExpression {
             expression: TemplateExpression::FieldAccessor {
                 path: vec![PathElement::AttributePath {
-                    name: "false ".to_string()
+                    name: "false".to_string()
                 }]
             }
         }));
