@@ -26,19 +26,22 @@ pub enum PathElement {
     IndexPath { index: i32 },
 }
 
-pub fn evaluate(exp: Expression, context: Value) -> Expression {
+pub fn evaluate(exp: Expression, context: Value) -> Result<Expression, String> {
     match exp {
-        Expression::JsonValue { value } => Expression::JsonValue { value },
-        Expression::TemplateExpression { expression } => Expression::JsonValue {
-            value: evaluate_template_expression(expression, context),
+        Expression::JsonValue { value } => Ok(Expression::JsonValue { value }),
+        Expression::TemplateExpression { expression } => {
+            let evaluated_expression = evaluate_template_expression(expression, context)?;
+            Ok(Expression::JsonValue {
+                value: evaluated_expression
+            }),
         },
-        Expression::StringConcatenation { parts } => Expression::JsonValue {
+        Expression::StringConcatenation { parts } => Ok(Expression::JsonValue {
             value: json!(format!("{{ {:?} }}", parts)),
-        },
+        }),
     }
 }
 
-pub fn evaluate_template_expression(exp: TemplateExpression, context: Value) -> Value {
+pub fn evaluate_template_expression(exp: TemplateExpression, context: Value) -> Result<Value, String> {
     match exp {
         TemplateExpression::FieldAccessor { path } => {
             evaluate_field_accessor(path, context)
@@ -46,21 +49,27 @@ pub fn evaluate_template_expression(exp: TemplateExpression, context: Value) -> 
     }
 }
 
-pub fn evaluate_field_accessor(path: Vec<PathElement>, context: Value) -> Value {
+pub fn evaluate_field_accessor(path: Vec<PathElement>, context: Value) -> Result<Value, String> {
     let mut current_value = context;
     for path_element in path {
-        current_value = evaluate_path_element(path_element, current_value);
+        current_value = evaluate_path_element(path_element, current_value)?;
     }
-    current_value
+    Ok(current_value)
 }
 
-pub fn evaluate_path_element(path_element: PathElement, context: Value) -> Value {
+pub fn evaluate_path_element(path_element: PathElement, context: Value) -> Result<Value, String> {
     match path_element {
         PathElement::AttributePath { name } => {
-            context.get(name).unwrap().clone()
+            match context.get(name.clone()) {
+                Some(value) => Ok(value.clone()),
+                None => Err(format!("Attribute {} does not exist", name.clone()))
+            }
         }
         PathElement::IndexPath { index } => {
-            context.get(index as usize).unwrap().clone()
+            match context.get(index as usize) {
+                Some(value) => Ok(value.clone()),
+                None => Err(format!("Index {} does not exist", index))
+            }
         }
     }
 }
