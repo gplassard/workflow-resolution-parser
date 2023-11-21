@@ -13,12 +13,13 @@ pub fn parse_boolean(input: &str) -> IResult<&str, Expression> {
             tag_no_case("true"),
         ),
         value(
-            Expression::JsonValue { value: json!(false) },
+            Expression::JsonValue {
+                value: json!(false),
+            },
             tag_no_case("false"),
-        )
+        ),
     ))(input)
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -37,7 +38,12 @@ mod tests {
     #[test]
     fn test_parse_false() {
         let result = parse_boolean("false");
-        let expected = Ok(("", JsonValue { value: json!(false) }));
+        let expected = Ok((
+            "",
+            JsonValue {
+                value: json!(false),
+            },
+        ));
         assert_eq!(result, expected);
     }
 
