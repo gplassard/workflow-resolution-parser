@@ -1,4 +1,4 @@
-use serde_json::{json, Value};
+use serde_json::Value;
 
 #[derive(PartialEq, Debug, Clone)]
 #[allow(clippy::enum_variant_names)]

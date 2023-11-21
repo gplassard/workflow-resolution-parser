@@ -1,7 +1,8 @@
 use serde_json::json;
-use crate::expression::evaluate;
+use crate::evaluate::evaluate;
 use crate::parse::parse_expression;
 
+mod evaluate;
 mod expression;
 mod parse;
 
