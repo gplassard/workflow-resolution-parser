@@ -13,7 +13,9 @@ pub fn parse_boolean(input: &str) -> IResult<&str, Expression> {
             tag_no_case("true"),
         ),
         value(
-            Expression::JsonValue { value: json!(false)},
+            Expression::JsonValue {
+                value: json!(false),
+            },
             tag_no_case("false"),
         ),
     ))(input)
