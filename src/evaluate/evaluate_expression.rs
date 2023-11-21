@@ -18,3 +18,36 @@ pub fn evaluate_expression(exp: Expression, context: Value) -> Result<Expression
         }),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use serde_json::json;
+    use crate::evaluate::evaluate_expression::evaluate_expression;
+    use crate::expression::{Expression, PathElement};
+    use crate::expression::TemplateExpression::FieldAccessor;
+
+    #[test]
+    fn test_evaluate_json_value() {
+        let result = evaluate_expression(Expression::JsonValue {value: json!("hello")}, json!({}));
+        let expected = Ok(Expression::JsonValue {value: json!("hello")} );
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_evaluate_template_expression() {
+        let result = evaluate_expression(
+            Expression::TemplateExpression {
+                expression: FieldAccessor {
+                    path: vec![
+                        PathElement::AttributePath {
+                            name: "foo".to_string(),
+                        }
+                    ],
+                },
+            },
+            json!({"foo": ["bar", "baz"]}),
+        );
+        let expected = Ok(Expression::JsonValue {value: json!(["bar", "baz"])});
+        assert_eq!(result, expected);
+    }
+}
