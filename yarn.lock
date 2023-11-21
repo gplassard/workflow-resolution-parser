@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@gplassard/projen-extensions@^0.0.61":
-  version "0.0.61"
-  resolved "https://npm.pkg.github.com/download/@gplassard/projen-extensions/0.0.61/86204c22d9440c7b8847bef912615d7432a1440c#86204c22d9440c7b8847bef912615d7432a1440c"
-  integrity sha512-VXJquH+z4cDIXhvQoQUCZAPSINzYfYenSqNVevwEiKPAi7O9sWTPTfTh1bfLh0x8G7rXfjOeZ2vg3L0AG73QsA==
+"@gplassard/projen-extensions@^0.0.68":
+  version "0.0.68"
+  resolved "https://npm.pkg.github.com/download/@gplassard/projen-extensions/0.0.68/8ad14419fc7b1e33e8c625f5028ba0177e644c2a#8ad14419fc7b1e33e8c625f5028ba0177e644c2a"
+  integrity sha512-tjtDnfn6MoArM8GDrH6mLir5yM1HCm52jXgkbXLFqAZIgCMui9FXLr63aaFMiwNZUdblr6t/86uyEMAqEOIzkw==
   dependencies:
-    projen "^0.73.37"
+    projen "^0.76.16"
 
 "@iarna/toml@^2.2.5":
   version "2.2.5"
@@ -136,6 +136,11 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
+
+constructs@^10.0.0:
+  version "10.3.0"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-10.3.0.tgz#4c246fce9cf8e77711ad45944e9fbd41f1501965"
+  integrity sha512-vbK8i3rIb/xwZxSpTjz3SagHn1qq9BChLEfy5Hf6fB3/2eFbrwt2n9kHwQcS0CPTRBesreeAcsJfMq2229FnbQ==
 
 conventional-changelog-config-spec@^2.1.0:
   version "2.1.0"
@@ -308,15 +313,16 @@ path-parse@^1.0.7:
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
-projen@^0.73.37:
-  version "0.73.45"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.73.45.tgz#7c0ecc73f4e9db35eafcf2d9a637c1e75f125220"
-  integrity sha512-JEYR1l710BmSGd+JoPTjQplH3hZoYsMqm8JCBb+q068vpvjXMCSKUzjOiJOLnTU7Z8/+Lm3BevEH/WY5Qoq99w==
+projen@^0.76.16:
+  version "0.76.29"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.76.29.tgz#13810ceb6d63f26b6ded63d4a49c4a21c523f727"
+  integrity sha512-m0bKElBV/aRtXqRD0KMVjTRXnFabNXfEDUeAefrXQWtlmHcdPCzVEJKGgpH334B2eceT9rzJlV+iI/PXUxmTWg==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
     chalk "^4.1.2"
     comment-json "4.2.2"
+    constructs "^10.0.0"
     conventional-changelog-config-spec "^2.1.0"
     fast-json-patch "^3.1.1"
     glob "^8"

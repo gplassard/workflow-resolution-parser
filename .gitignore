@@ -12,5 +12,6 @@ node_modules/
 target
 !/.github/workflows/rust-release.yml
 !/.github/workflows/rust-build.yml
+!/.github/workflows/rust-lint.yml
 !/.npmrc
 !/.github/workflows/pull-request-lint.yml
