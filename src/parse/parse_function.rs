@@ -25,12 +25,7 @@ pub fn parse_function(input: &str) -> IResult<&str, Function> {
         ),
     ))(input)?;
 
-    Ok((
-        remaining,
-        Function {
-            name: parsed,
-        },
-    ))
+    Ok((remaining, Function { name: parsed }))
 }
 
 #[cfg(test)]
@@ -41,35 +36,60 @@ mod tests {
     #[test]
     fn test_parse_trim() {
         let result = parse_function("trim");
-        let expected = Ok(("", Function { name: FunctionName::Trim }));
+        let expected = Ok((
+            "",
+            Function {
+                name: FunctionName::Trim,
+            },
+        ));
         assert_eq!(result, expected);
     }
 
     #[test]
     fn test_parse_upper() {
         let result = parse_function("upper");
-        let expected = Ok(("", Function { name: FunctionName::Upper }));
+        let expected = Ok((
+            "",
+            Function {
+                name: FunctionName::Upper,
+            },
+        ));
         assert_eq!(result, expected);
     }
 
     #[test]
     fn test_parse_lower() {
         let result = parse_function("lower");
-        let expected = Ok(("", Function { name: FunctionName::Lower }));
+        let expected = Ok((
+            "",
+            Function {
+                name: FunctionName::Lower,
+            },
+        ));
         assert_eq!(result, expected);
     }
 
     #[test]
     fn test_parse_length() {
         let result = parse_function("length");
-        let expected = Ok(("", Function { name: FunctionName::Length }));
+        let expected = Ok((
+            "",
+            Function {
+                name: FunctionName::Length,
+            },
+        ));
         assert_eq!(result, expected);
     }
 
     #[test]
     fn test_parse_length_remaining() {
         let result = parse_function("lengthAndMore");
-        let expected = Ok(("AndMore", Function { name: FunctionName::Length }));
+        let expected = Ok((
+            "AndMore",
+            Function {
+                name: FunctionName::Length,
+            },
+        ));
         assert_eq!(result, expected);
     }
 }

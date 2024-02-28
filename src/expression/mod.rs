@@ -1,5 +1,5 @@
-use std::fmt;
 use serde_json::Value;
+use std::fmt;
 
 #[derive(PartialEq, Debug, Clone)]
 #[allow(clippy::enum_variant_names)]
@@ -19,7 +19,7 @@ pub enum Expression {
 #[derive(PartialEq, Debug, Clone)]
 pub struct Template {
     pub field_accessor: FieldAccessor,
-    pub functions: Vec<Function>
+    pub functions: Vec<Function>,
 }
 
 #[derive(PartialEq, Debug, Clone)]
@@ -32,7 +32,7 @@ pub enum FunctionName {
     Length,
     Upper,
     Lower,
-    Trim
+    Trim,
 }
 
 impl fmt::Display for FunctionName {

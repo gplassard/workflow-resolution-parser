@@ -17,8 +17,8 @@ mod tests {
     use serde_json::json;
 
     use crate::evaluate::evaluate_template::evaluate_template;
-    use crate::expression::{FieldAccessor, Function, FunctionName, Template};
     use crate::expression::PathElement::AttributePath;
+    use crate::expression::{FieldAccessor, Function, FunctionName, Template};
 
     #[test]
     fn test_evaluate_template() {
@@ -27,7 +27,7 @@ mod tests {
                 field_accessor: FieldAccessor {
                     path: vec![AttributePath {
                         name: "hello".to_string(),
-                    }]
+                    }],
                 },
                 functions: vec![],
             },
@@ -44,15 +44,15 @@ mod tests {
                 field_accessor: FieldAccessor {
                     path: vec![AttributePath {
                         name: "hello".to_string(),
-                    }]
+                    }],
                 },
                 functions: vec![
                     Function {
-                        name: FunctionName::Upper
+                        name: FunctionName::Upper,
                     },
                     Function {
-                        name: FunctionName::Trim
-                    }
+                        name: FunctionName::Trim,
+                    },
                 ],
             },
             json!({"hello": "   world   "}),

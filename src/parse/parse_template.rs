@@ -1,9 +1,9 @@
 use nom::bytes::complete::tag;
 use nom::character::complete::space0;
 use nom::combinator::opt;
-use nom::IResult;
 use nom::multi::separated_list1;
 use nom::sequence::{delimited, preceded, terminated, tuple};
+use nom::IResult;
 
 use crate::expression::Template;
 use crate::parse::parse_field_accessor::parse_field_accessor;
@@ -14,7 +14,10 @@ pub fn parse_template(input: &str) -> IResult<&str, Template> {
 
     let (remaining, parsed) = delimited(
         terminated(tag("{{"), space0),
-        tuple((parse_field_accessor, opt(preceded(pipe_parser, functions_parser)))),
+        tuple((
+            parse_field_accessor,
+            opt(preceded(pipe_parser, functions_parser)),
+        )),
         preceded(space0, tag("}}")),
     )(input)?;
 
@@ -22,7 +25,10 @@ pub fn parse_template(input: &str) -> IResult<&str, Template> {
 
     Ok((
         remaining,
-        Template { field_accessor, functions: functions.unwrap_or_default() },
+        Template {
+            field_accessor,
+            functions: functions.unwrap_or_default(),
+        },
     ))
 }
 

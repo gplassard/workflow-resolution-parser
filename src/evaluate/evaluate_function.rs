@@ -5,7 +5,8 @@ use serde_json::{json, Value};
 use crate::expression::{Function, FunctionName};
 
 pub fn evaluate_function(function: Function, context: Value) -> Result<Value, String> {
-    context.as_str()
+    context
+        .as_str()
         .map(|context| match function.name {
             FunctionName::Length => {
                 json!(context.len())
@@ -20,7 +21,10 @@ pub fn evaluate_function(function: Function, context: Value) -> Result<Value, St
                 json!(context.trim())
             }
         })
-        .ok_or(format!("Expected value to be a string, got {:?}", context.type_id()))
+        .ok_or(format!(
+            "Expected value to be a string, got {:?}",
+            context.type_id()
+        ))
 }
 
 #[cfg(test)]

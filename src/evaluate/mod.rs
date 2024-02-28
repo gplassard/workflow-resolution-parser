@@ -4,9 +4,9 @@ use serde_json::Value;
 
 mod evaluate_expression;
 mod evaluate_field_accessor;
+mod evaluate_function;
 mod evaluate_path_element;
 mod evaluate_template;
-mod evaluate_function;
 
 pub fn evaluate(exp: Expression, context: Value) -> Result<Expression, String> {
     evaluate_expression(exp, context)

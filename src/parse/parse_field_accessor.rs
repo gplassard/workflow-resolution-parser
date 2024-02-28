@@ -1,9 +1,9 @@
 use nom::branch::alt;
 use nom::character::complete::char;
 use nom::combinator::opt;
-use nom::IResult;
 use nom::multi::many0;
 use nom::sequence::terminated;
+use nom::IResult;
 
 use crate::expression::FieldAccessor;
 use crate::parse::parse_path_element::{parse_attribute_path, parse_index_path};
@@ -14,10 +14,7 @@ pub fn parse_field_accessor(input: &str) -> IResult<&str, FieldAccessor> {
         opt(char('.')),
     ))(input)?;
 
-    Ok((
-        remaining,
-        FieldAccessor { path: parsed },
-    ))
+    Ok((remaining, FieldAccessor { path: parsed }))
 }
 
 #[cfg(test)]

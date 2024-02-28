@@ -1,6 +1,6 @@
+use crate::evaluate::evaluate_path_element::evaluate_path_element;
 use crate::expression::PathElement;
 use serde_json::Value;
-use crate::evaluate::evaluate_path_element::evaluate_path_element;
 
 pub fn evaluate_field_accessor(path: Vec<PathElement>, context: Value) -> Result<Value, String> {
     let mut current_value = context;

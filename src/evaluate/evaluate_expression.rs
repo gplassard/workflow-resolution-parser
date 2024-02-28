@@ -47,7 +47,7 @@ mod tests {
                     field_accessor: FieldAccessor {
                         path: vec![PathElement::AttributePath {
                             name: "foo".to_string(),
-                        }]
+                        }],
                     },
                     functions: vec![],
                 },
