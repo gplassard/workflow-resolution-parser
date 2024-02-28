@@ -7,7 +7,7 @@ mod expression;
 mod parse;
 
 fn main() {
-    let exp = parse_expression("{{foo.bar[1].baz}}");
+    let exp = parse_expression("{{foo.bar[1].baz | upper | trim}}");
     println!("{:?}", exp);
     println!(
         "{:?}",
@@ -18,7 +18,7 @@ fn main() {
                     "bar": [
                         {},
                         {
-                            "baz": "foobar"
+                            "baz": "  foobar  "
                         },
                     ]
                 }

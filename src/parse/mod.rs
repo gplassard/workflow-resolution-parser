@@ -11,6 +11,7 @@ mod parse_path_element;
 mod parse_string;
 mod parse_template;
 mod parse_field_accessor;
+mod parse_function;
 
 pub fn parse_expression(input: &str) -> IResult<&str, Expression> {
     alt((parse_template_as_expression, parse_boolean, parse_string_as_expression))(input)

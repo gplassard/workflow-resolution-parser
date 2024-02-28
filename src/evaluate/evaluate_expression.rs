@@ -48,7 +48,8 @@ mod tests {
                         path: vec![PathElement::AttributePath {
                             name: "foo".to_string(),
                         }]
-                    }
+                    },
+                    functions: vec![],
                 },
             },
             json!({"foo": ["bar", "baz"]}),
