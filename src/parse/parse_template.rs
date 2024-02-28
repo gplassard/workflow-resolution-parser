@@ -4,24 +4,24 @@ use nom::sequence::{delimited, preceded, terminated};
 use nom::IResult;
 
 use crate::expression::Expression;
-use crate::parse::parse_template_expression::parse_template_expression;
+use crate::parse::parse_field_accessor::parse_field_accessor;
 
 pub fn parse_template(input: &str) -> IResult<&str, Expression> {
     let (remaining, parsed) = delimited(
         tag("{{"),
-        preceded(space0, terminated(parse_template_expression, space0)),
+        preceded(space0, terminated(parse_field_accessor, space0)),
         tag("}}"),
     )(input)?;
 
     Ok((
         remaining,
-        Expression::TemplateExpression { expression: parsed },
+        Expression::Template { field_accessor: parsed },
     ))
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::expression::{Expression, PathElement, TemplateExpression};
+    use crate::expression::{Expression, PathElement, FieldAccessor};
     use crate::parse::parse_template::parse_template;
 
     #[test]
@@ -29,8 +29,8 @@ mod tests {
         let result = parse_template("{{true}}");
         let expected = Ok((
             "",
-            Expression::TemplateExpression {
-                expression: TemplateExpression::FieldAccessor {
+            Expression::Template {
+                field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "true".to_string(),
                     }],
@@ -45,8 +45,8 @@ mod tests {
         let result = parse_template("{{ false }}");
         let expected = Ok((
             "",
-            Expression::TemplateExpression {
-                expression: TemplateExpression::FieldAccessor {
+            Expression::Template {
+                field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "false".to_string(),
                     }],
@@ -61,8 +61,8 @@ mod tests {
         let result = parse_template("{{TrUe}}WithOtherStuff");
         let expected = Ok((
             "WithOtherStuff",
-            Expression::TemplateExpression {
-                expression: TemplateExpression::FieldAccessor {
+            Expression::Template {
+                field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "TrUe".to_string(),
                     }],

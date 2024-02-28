@@ -1,14 +1,14 @@
 use nom::branch::alt;
 use nom::character::complete::char;
 use nom::combinator::opt;
+use nom::IResult;
 use nom::multi::many0;
 use nom::sequence::terminated;
-use nom::IResult;
 
-use crate::expression::TemplateExpression;
+use crate::expression::FieldAccessor;
 use crate::parse::parse_path_element::{parse_attribute_path, parse_index_path};
 
-pub fn parse_template_expression(input: &str) -> IResult<&str, TemplateExpression> {
+pub fn parse_field_accessor(input: &str) -> IResult<&str, FieldAccessor> {
     let (remaining, parsed) = many0(terminated(
         alt((parse_attribute_path, parse_index_path)),
         opt(char('.')),
@@ -16,22 +16,22 @@ pub fn parse_template_expression(input: &str) -> IResult<&str, TemplateExpressio
 
     Ok((
         remaining,
-        TemplateExpression::FieldAccessor { path: parsed },
+        FieldAccessor { path: parsed },
     ))
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::expression::FieldAccessor;
     use crate::expression::PathElement::{AttributePath, IndexPath};
-    use crate::expression::TemplateExpression;
-    use crate::parse::parse_template_expression::parse_template_expression;
+    use crate::parse::parse_field_accessor::parse_field_accessor;
 
     #[test]
     fn test_parse_single_attribute_path() {
-        let result = parse_template_expression("foo");
+        let result = parse_field_accessor("foo");
         let expected = Ok((
             "",
-            TemplateExpression::FieldAccessor {
+            FieldAccessor {
                 path: vec![AttributePath {
                     name: "foo".to_string(),
                 }],
@@ -42,10 +42,10 @@ mod tests {
 
     #[test]
     fn test_parse_multiple_attribute_path() {
-        let result = parse_template_expression("foo.bar");
+        let result = parse_field_accessor("foo.bar");
         let expected = Ok((
             "",
-            TemplateExpression::FieldAccessor {
+            FieldAccessor {
                 path: vec![
                     AttributePath {
                         name: "foo".to_string(),
@@ -61,10 +61,10 @@ mod tests {
 
     #[test]
     fn test_parse_index_path() {
-        let result = parse_template_expression("foo[0]");
+        let result = parse_field_accessor("foo[0]");
         let expected = Ok((
             "",
-            TemplateExpression::FieldAccessor {
+            FieldAccessor {
                 path: vec![
                     AttributePath {
                         name: "foo".to_string(),
@@ -78,10 +78,10 @@ mod tests {
 
     #[test]
     fn test_parse_nested() {
-        let result = parse_template_expression("foo[0].bar[1]");
+        let result = parse_field_accessor("foo[0].bar[1]");
         let expected = Ok((
             "",
-            TemplateExpression::FieldAccessor {
+            FieldAccessor {
                 path: vec![
                     AttributePath {
                         name: "foo".to_string(),
@@ -99,10 +99,10 @@ mod tests {
 
     #[test]
     fn test_parse_remains() {
-        let result = parse_template_expression("foo[0].bar[1] andotherstuff");
+        let result = parse_field_accessor("foo[0].bar[1] andotherstuff");
         let expected = Ok((
             " andotherstuff",
-            TemplateExpression::FieldAccessor {
+            FieldAccessor {
                 path: vec![
                     AttributePath {
                         name: "foo".to_string(),

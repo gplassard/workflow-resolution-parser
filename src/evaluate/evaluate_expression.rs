@@ -1,12 +1,12 @@
-use crate::evaluate::evaluate_template_expression::evaluate_template_expression;
 use crate::expression::Expression;
 use serde_json::{json, Value};
+use crate::evaluate::evaluate_field_accessor::evaluate_field_accessor;
 
 pub fn evaluate_expression(exp: Expression, context: Value) -> Result<Expression, String> {
     match exp {
         Expression::JsonValue { value } => Ok(Expression::JsonValue { value }),
-        Expression::TemplateExpression { expression } => {
-            let evaluated_expression = evaluate_template_expression(expression, context)?;
+        Expression::Template { field_accessor } => {
+            let evaluated_expression = evaluate_field_accessor(field_accessor.path, context)?;
             Ok(Expression::JsonValue {
                 value: evaluated_expression,
             })
@@ -20,8 +20,7 @@ pub fn evaluate_expression(exp: Expression, context: Value) -> Result<Expression
 #[cfg(test)]
 mod tests {
     use crate::evaluate::evaluate_expression::evaluate_expression;
-    use crate::expression::TemplateExpression::FieldAccessor;
-    use crate::expression::{Expression, PathElement};
+    use crate::expression::{Expression, FieldAccessor, PathElement};
     use serde_json::json;
 
     #[test]
@@ -41,11 +40,11 @@ mod tests {
     #[test]
     fn test_evaluate_template_expression() {
         let result = evaluate_expression(
-            Expression::TemplateExpression {
-                expression: FieldAccessor {
+            Expression::Template {
+                field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "foo".to_string(),
-                    }],
+                    }]
                 },
             },
             json!({"foo": ["bar", "baz"]}),

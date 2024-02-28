@@ -6,8 +6,8 @@ pub enum Expression {
     JsonValue {
         value: Value,
     },
-    TemplateExpression {
-        expression: TemplateExpression,
+    Template {
+        field_accessor: FieldAccessor,
     },
     #[allow(dead_code)]
     StringConcatenation {
@@ -16,8 +16,8 @@ pub enum Expression {
 }
 
 #[derive(PartialEq, Debug, Clone)]
-pub enum TemplateExpression {
-    FieldAccessor { path: Vec<PathElement> },
+pub struct FieldAccessor {
+    pub path: Vec<PathElement>,
 }
 
 #[derive(PartialEq, Debug, Clone)]
