@@ -3,10 +3,10 @@ use nom::character::complete::space0;
 use nom::sequence::{delimited, preceded, terminated};
 use nom::IResult;
 
-use crate::expression::Expression;
+use crate::expression::Template;
 use crate::parse::parse_field_accessor::parse_field_accessor;
 
-pub fn parse_template(input: &str) -> IResult<&str, Expression> {
+pub fn parse_template(input: &str) -> IResult<&str, Template> {
     let (remaining, parsed) = delimited(
         tag("{{"),
         preceded(space0, terminated(parse_field_accessor, space0)),
@@ -15,13 +15,13 @@ pub fn parse_template(input: &str) -> IResult<&str, Expression> {
 
     Ok((
         remaining,
-        Expression::Template { field_accessor: parsed },
+        Template { field_accessor: parsed },
     ))
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::expression::{Expression, PathElement, FieldAccessor};
+    use crate::expression::{PathElement, FieldAccessor, Template};
     use crate::parse::parse_template::parse_template;
 
     #[test]
@@ -29,7 +29,7 @@ mod tests {
         let result = parse_template("{{true}}");
         let expected = Ok((
             "",
-            Expression::Template {
+            Template {
                 field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "true".to_string(),
@@ -45,7 +45,7 @@ mod tests {
         let result = parse_template("{{ false }}");
         let expected = Ok((
             "",
-            Expression::Template {
+            Template {
                 field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "false".to_string(),
@@ -61,7 +61,7 @@ mod tests {
         let result = parse_template("{{TrUe}}WithOtherStuff");
         let expected = Ok((
             "WithOtherStuff",
-            Expression::Template {
+            Template {
                 field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "TrUe".to_string(),

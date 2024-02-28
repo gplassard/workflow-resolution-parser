@@ -13,5 +13,13 @@ mod parse_template;
 mod parse_field_accessor;
 
 pub fn parse_expression(input: &str) -> IResult<&str, Expression> {
-    alt((parse_template, parse_boolean, parse_string_as_expression))(input)
+    alt((parse_template_as_expression, parse_boolean, parse_string_as_expression))(input)
+}
+
+fn parse_template_as_expression(input: &str) -> IResult<&str, Expression> {
+    let (remaining, parsed) = parse_template(input)?;
+    Ok((
+        remaining,
+        Expression::Template { template: parsed },
+    ))
 }

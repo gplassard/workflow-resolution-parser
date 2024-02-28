@@ -7,12 +7,17 @@ pub enum Expression {
         value: Value,
     },
     Template {
-        field_accessor: FieldAccessor,
+        template: Template,
     },
     #[allow(dead_code)]
     StringConcatenation {
         parts: Vec<Expression>,
     },
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub struct Template {
+    pub field_accessor: FieldAccessor,
 }
 
 #[derive(PartialEq, Debug, Clone)]
