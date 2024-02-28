@@ -1,27 +1,45 @@
 use nom::bytes::complete::tag;
 use nom::character::complete::space0;
-use nom::sequence::{delimited, preceded, terminated};
+use nom::combinator::opt;
+use nom::multi::separated_list1;
+use nom::sequence::{delimited, preceded, terminated, tuple};
 use nom::IResult;
 
-use crate::expression::Expression;
-use crate::parse::parse_template_expression::parse_template_expression;
+use crate::expression::Template;
+use crate::parse::parse_field_accessor::parse_field_accessor;
+use crate::parse::parse_function::parse_function;
 
-pub fn parse_template(input: &str) -> IResult<&str, Expression> {
+pub fn parse_template(input: &str) -> IResult<&str, Template> {
+    let functions_parser = separated_list1(pipe_parser, parse_function);
+
     let (remaining, parsed) = delimited(
-        tag("{{"),
-        preceded(space0, terminated(parse_template_expression, space0)),
-        tag("}}"),
+        terminated(tag("{{"), space0),
+        tuple((
+            parse_field_accessor,
+            opt(preceded(pipe_parser, functions_parser)),
+        )),
+        preceded(space0, tag("}}")),
     )(input)?;
+
+    let (field_accessor, functions) = parsed;
 
     Ok((
         remaining,
-        Expression::TemplateExpression { expression: parsed },
+        Template {
+            field_accessor,
+            functions: functions.unwrap_or_default(),
+        },
     ))
+}
+
+fn pipe_parser(input: &str) -> IResult<&str, ()> {
+    let (remaining, _) = preceded(space0, terminated(tag("|"), space0))(input)?;
+    Ok((remaining, ()))
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::expression::{Expression, PathElement, TemplateExpression};
+    use crate::expression::{FieldAccessor, Function, FunctionName, PathElement, Template};
     use crate::parse::parse_template::parse_template;
 
     #[test]
@@ -29,12 +47,13 @@ mod tests {
         let result = parse_template("{{true}}");
         let expected = Ok((
             "",
-            Expression::TemplateExpression {
-                expression: TemplateExpression::FieldAccessor {
+            Template {
+                field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "true".to_string(),
                     }],
                 },
+                functions: vec![],
             },
         ));
         assert_eq!(result, expected);
@@ -45,12 +64,13 @@ mod tests {
         let result = parse_template("{{ false }}");
         let expected = Ok((
             "",
-            Expression::TemplateExpression {
-                expression: TemplateExpression::FieldAccessor {
+            Template {
+                field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "false".to_string(),
                     }],
                 },
+                functions: vec![],
             },
         ));
         assert_eq!(result, expected);
@@ -61,12 +81,40 @@ mod tests {
         let result = parse_template("{{TrUe}}WithOtherStuff");
         let expected = Ok((
             "WithOtherStuff",
-            Expression::TemplateExpression {
-                expression: TemplateExpression::FieldAccessor {
+            Template {
+                field_accessor: FieldAccessor {
                     path: vec![PathElement::AttributePath {
                         name: "TrUe".to_string(),
                     }],
                 },
+                functions: vec![],
+            },
+        ));
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_parse_with_functions() {
+        let result = parse_template("{{ TrUe | lower | trim | upper }}");
+        let expected = Ok((
+            "",
+            Template {
+                field_accessor: FieldAccessor {
+                    path: vec![PathElement::AttributePath {
+                        name: "TrUe".to_string(),
+                    }],
+                },
+                functions: vec![
+                    Function {
+                        name: FunctionName::Lower,
+                    },
+                    Function {
+                        name: FunctionName::Trim,
+                    },
+                    Function {
+                        name: FunctionName::Upper,
+                    },
+                ],
             },
         ));
         assert_eq!(result, expected);

@@ -1,12 +1,13 @@
-use crate::evaluate::evaluate_template_expression::evaluate_template_expression;
-use crate::expression::Expression;
 use serde_json::{json, Value};
+
+use crate::evaluate::evaluate_template::evaluate_template;
+use crate::expression::Expression;
 
 pub fn evaluate_expression(exp: Expression, context: Value) -> Result<Expression, String> {
     match exp {
         Expression::JsonValue { value } => Ok(Expression::JsonValue { value }),
-        Expression::TemplateExpression { expression } => {
-            let evaluated_expression = evaluate_template_expression(expression, context)?;
+        Expression::Template { template } => {
+            let evaluated_expression = evaluate_template(template, context)?;
             Ok(Expression::JsonValue {
                 value: evaluated_expression,
             })
@@ -19,10 +20,10 @@ pub fn evaluate_expression(exp: Expression, context: Value) -> Result<Expression
 
 #[cfg(test)]
 mod tests {
-    use crate::evaluate::evaluate_expression::evaluate_expression;
-    use crate::expression::TemplateExpression::FieldAccessor;
-    use crate::expression::{Expression, PathElement};
     use serde_json::json;
+
+    use crate::evaluate::evaluate_expression::evaluate_expression;
+    use crate::expression::{Expression, FieldAccessor, PathElement, Template};
 
     #[test]
     fn test_evaluate_json_value() {
@@ -41,11 +42,14 @@ mod tests {
     #[test]
     fn test_evaluate_template_expression() {
         let result = evaluate_expression(
-            Expression::TemplateExpression {
-                expression: FieldAccessor {
-                    path: vec![PathElement::AttributePath {
-                        name: "foo".to_string(),
-                    }],
+            Expression::Template {
+                template: Template {
+                    field_accessor: FieldAccessor {
+                        path: vec![PathElement::AttributePath {
+                            name: "foo".to_string(),
+                        }],
+                    },
+                    functions: vec![],
                 },
             },
             json!({"foo": ["bar", "baz"]}),

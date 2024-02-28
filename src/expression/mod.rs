@@ -1,4 +1,5 @@
 use serde_json::Value;
+use std::fmt;
 
 #[derive(PartialEq, Debug, Clone)]
 #[allow(clippy::enum_variant_names)]
@@ -6,8 +7,8 @@ pub enum Expression {
     JsonValue {
         value: Value,
     },
-    TemplateExpression {
-        expression: TemplateExpression,
+    Template {
+        template: Template,
     },
     #[allow(dead_code)]
     StringConcatenation {
@@ -16,8 +17,33 @@ pub enum Expression {
 }
 
 #[derive(PartialEq, Debug, Clone)]
-pub enum TemplateExpression {
-    FieldAccessor { path: Vec<PathElement> },
+pub struct Template {
+    pub field_accessor: FieldAccessor,
+    pub functions: Vec<Function>,
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub struct Function {
+    pub name: FunctionName,
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub enum FunctionName {
+    Length,
+    Upper,
+    Lower,
+    Trim,
+}
+
+impl fmt::Display for FunctionName {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub struct FieldAccessor {
+    pub path: Vec<PathElement>,
 }
 
 #[derive(PartialEq, Debug, Clone)]
