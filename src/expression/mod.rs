@@ -29,10 +29,10 @@ pub struct Function {
 
 #[derive(PartialEq, Debug, Clone)]
 pub enum FunctionName {
-    LENGTH,
-    UPPER,
-    LOWER,
-    TRIM
+    Length,
+    Upper,
+    Lower,
+    Trim
 }
 
 impl fmt::Display for FunctionName {

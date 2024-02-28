@@ -100,13 +100,13 @@ mod tests {
                 },
                 functions: vec![
                     Function {
-                        name: FunctionName::LOWER,
+                        name: FunctionName::Lower,
                     },
                     Function {
-                        name: FunctionName::TRIM,
+                        name: FunctionName::Trim,
                     },
                     Function {
-                        name: FunctionName::UPPER,
+                        name: FunctionName::Upper,
                     },
                 ],
             },

@@ -48,10 +48,10 @@ mod tests {
                 },
                 functions: vec![
                     Function {
-                        name: FunctionName::UPPER
+                        name: FunctionName::Upper
                     },
                     Function {
-                        name: FunctionName::TRIM
+                        name: FunctionName::Trim
                     }
                 ],
             },

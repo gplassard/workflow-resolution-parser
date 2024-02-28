@@ -7,16 +7,16 @@ use crate::expression::{Function, FunctionName};
 pub fn evaluate_function(function: Function, context: Value) -> Result<Value, String> {
     context.as_str()
         .map(|context| match function.name {
-            FunctionName::LENGTH => {
+            FunctionName::Length => {
                 json!(context.len())
             }
-            FunctionName::UPPER => {
+            FunctionName::Upper => {
                 json!(context.to_uppercase())
             }
-            FunctionName::LOWER => {
+            FunctionName::Lower => {
                 json!(context.to_lowercase())
             }
-            FunctionName::TRIM => {
+            FunctionName::Trim => {
                 json!(context.trim())
             }
         })
@@ -34,7 +34,7 @@ mod tests {
     fn test_evaluate_length() {
         let result = evaluate_function(
             Function {
-                name: FunctionName::LENGTH,
+                name: FunctionName::Length,
             },
             json!("helloworld"),
         );
@@ -45,7 +45,7 @@ mod tests {
     fn test_evaluate_upper() {
         let result = evaluate_function(
             Function {
-                name: FunctionName::UPPER,
+                name: FunctionName::Upper,
             },
             json!("helloworld"),
         );
@@ -56,7 +56,7 @@ mod tests {
     fn test_evaluate_lower() {
         let result = evaluate_function(
             Function {
-                name: FunctionName::LOWER,
+                name: FunctionName::Lower,
             },
             json!("HELLOWORLD"),
         );
@@ -67,7 +67,7 @@ mod tests {
     fn test_evaluate_trim() {
         let result = evaluate_function(
             Function {
-                name: FunctionName::TRIM,
+                name: FunctionName::Trim,
             },
             json!("  abc "),
         );
