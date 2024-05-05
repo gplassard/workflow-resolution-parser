@@ -1,12 +1,13 @@
 {
   "files": [
     ".gitattributes",
+    ".github/workflows/projen-synth.yml",
     ".github/workflows/pull-request-lint.yml",
     ".github/workflows/rust-build.yml",
     ".github/workflows/rust-lint.yml",
     ".github/workflows/rust-release.yml",
+    ".github/workflows/upgrade-nodejs-dependencies.yml",
     ".gitignore",
-    ".npmrc",
     ".projen/deps.json",
     ".projen/files.json",
     ".projen/tasks.json",

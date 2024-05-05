@@ -2,10 +2,13 @@
   "name": "workflow-resolution-parser",
   "version": "0.1.0",
   "main": "index.js",
+  "scripts": {
+    "projen": "node .projenrc.js"
+  },
   "license": "MIT",
   "devDependencies": {
-    "@gplassard/projen-extensions": "^0.0.68",
-    "projen": "^0.76.4"
+    "@gplassard/projen-extensions": "^0.0.99",
+    "projen": "^0.81.5"
   },
   "volta": {
     "node": "18.18.2"
