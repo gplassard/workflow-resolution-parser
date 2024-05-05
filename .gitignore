@@ -13,5 +13,6 @@ target
 !/.github/workflows/rust-release.yml
 !/.github/workflows/rust-build.yml
 !/.github/workflows/rust-lint.yml
-!/.npmrc
 !/.github/workflows/pull-request-lint.yml
+!/.github/workflows/upgrade-nodejs-dependencies.yml
+!/.github/workflows/projen-synth.yml
