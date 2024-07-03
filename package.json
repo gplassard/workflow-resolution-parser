@@ -7,8 +7,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@gplassard/projen-extensions": "^0.0.102",
-    "projen": "^0.82.4"
+    "@gplassard/projen-extensions": "^0.0.104",
+    "projen": "^0.82.8"
   },
   "volta": {
     "node": "18.18.2"
